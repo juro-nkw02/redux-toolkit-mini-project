@@ -1,0 +1,51 @@
+{
+  "games": [
+    {
+      "name": "TTY",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
+      "id": 11
+    },
+    {
+      "name": "TTY",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
+      "id": 12
+    },
+    {
+      "name": "gg",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
+      "id": 13
+    },
+    {
+      "name": "jj",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
+      "id": 14
+    },
+    {
+      "name": "asdff",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
+      "id": 15
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "password": "admin@123",
+      "id": 1
+    },
+    {
+      "username": "gg",
+      "password": "gg@123",
+      "id": 2
+    },
+    {
+      "username": "HH",
+      "password": "hh@123",
+      "id": 3
+    },
+    {
+      "username": "jj",
+      "password": "jj@123",
+      "id": 4
+    }
+  ]
+}

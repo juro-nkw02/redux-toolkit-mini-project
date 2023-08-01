@@ -1,0 +1,32 @@
+.error {
+  @apply text-gray-100 py-2 text-opacity-80;
+}
+
+.bg__error {
+  background: hsl(0, 100%, 50%);
+}
+
+.bg__success {
+  background: linear-gradient(170deg, hsl(0, 3%, 6%, 0.7) 0%, #e87070 100%);
+}
+
+form div {
+  @apply flex flex-col gap-y-1 mb-2;
+}
+
+form div label {
+  @apply text-pink-300 font-bold;
+}
+
+form div div input {
+  @apply w-full bg-white p-2 rounded-md text-red-950;
+}
+
+.btn__submit {
+  background: linear-gradient(170deg, #e87070 0%, #100f0fb3 100%);
+  @apply px-8 py-2 mt-4 rounded-md cursor-pointer;
+}
+
+.btn__submit:hover {
+  background: linear-gradient(170deg, #cf1b1b 0%, #aa8383b3 100%);
+}
