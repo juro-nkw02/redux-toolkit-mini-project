@@ -1,22 +1,26 @@
-import './style.css';
-import { useEffect, useState } from 'react';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUsers, login } from '../../features/auth/authSlice.js';
-import useToken from '../../hooks/useToken.js';
+import "./style.css";
+import { useEffect, useState } from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers, login } from "../../features/auth/authSlice.js";
+import useToken from "../../hooks/useToken.js";
+import FormikController from "../../formik/formik-container";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+
 
 const formInitial = {
-  username: '',
-  password: '',
+  username: "",
+  password: "",
 };
 
 const errorsInitial = {
-  all: '',
-  username: '',
-  password: '',
-  register: '',
-  incorrect: '',
+  all: "",
+  username: "",
+  password: "",
+  register: "",
+  incorrect: "",
 };
 
 const Index = () => {
@@ -42,15 +46,15 @@ const Index = () => {
     };
 
     if (auth.username.length === 0 && auth.password.length === 0) {
-      errorBag['all'] = 'All fields are required!';
+      errorBag["all"] = "All fields are required!";
       return returnError();
     }
 
     if (auth.username.length === 0) {
-      errorBag['username'] = 'Username must not be empty!';
+      errorBag["username"] = "Username must not be empty!";
     }
     if (auth.password.length === 0) {
-      errorBag['password'] = 'Password must not be empty!';
+      errorBag["password"] = "Password must not be empty!";
     }
 
     if (auth.username.length !== 0 && auth.password.length !== 0) {
@@ -59,8 +63,8 @@ const Index = () => {
       });
 
       if (!userExists) {
-        errorBag['incorrect'] =
-          'Your username does not match with our system! Please create a new one.';
+        errorBag["incorrect"] =
+          "Your username does not match with our system! Please create a new one.";
 
         return returnError();
       }
@@ -75,7 +79,7 @@ const Index = () => {
         return true;
       }
 
-      errorBag['all'] = 'Wrong credentials!';
+      errorBag["all"] = "Wrong credentials!";
       return returnError();
     }
 
@@ -94,21 +98,56 @@ const Index = () => {
   const handleLoginSubmit = (event) => {
     event.preventDefault();
 
-    console.log('login location ', location);
+    console.log("login location ", location);
     if (validator()) {
       dispatch(login(auth));
-      const to = location.state?.from?.pathname ?? '/';
+      const to = location.state?.from?.pathname ?? "/";
       navigate(to);
       setToken(auth);
     }
   };
 
   return (
-    <section className='w-3/5 m-auto text-white'>
-      <p className='text-center mb-4 text-4xl'>Welcome Back to GS! </p>
+    <section className="w-3/5 m-auto text-white">
+      <p className="mb-4 text-4xl text-center">Welcome Back to GS! </p>
+
+      <Formik initialValues={{ name: "" ,password:""}}  validationSchema={Yup.object({
+          name: Yup.string().required("Username is required"),
+      
+          password: Yup.string().required("Password is required"),
+      })}
+        
+        onSubmit={(values) => {
+        console.log("Values", values);
+
+        dispatch(login(auth));
+        const to = location.state?.from?.pathname ?? "/";
+        navigate(to);
+        setToken(auth);
+      }}>
+        {
+          (props) => (
+            <Form>
+              <FormikController control="input" label="username" placeholder="Enter a username" name="name" />
+              <FormikController control="input-password" name="password" label="Password" placeholder="Enter a password" />
+              
+              <div className="flex items-end justify-end">
+            <Link to="/register" className="underline">
+              Register
+            </Link>
+              </div>
+              
+              {console.log("Propsss",props)}
+              <FormikController control="button" label="Login" disabled={!(props.dirty && props.isValid)} />
+            </Form>
+          )
+        }
+
+
+{/* 
       <form onSubmit={handleLoginSubmit}>
-        {errors?.all && <p className='error'>{errors?.all}</p>}
-        {errors?.register && <p className='error'>{errors?.register}</p>}
+        {errors?.all && <p className="error">{errors?.all}</p>}
+        {errors?.register && <p className="error">{errors?.register}</p>}
         <div>
           <label htmlFor='username'>Username</label>
           <div
@@ -127,46 +166,49 @@ const Index = () => {
           </div>
           {errors?.username && <p className='error'>{errors?.username}</p>}
         </div>
+      
         <div>
-          <label htmlFor='password'>Password</label>
+          <label htmlFor="password">Password</label>
           <div
             className={`p-0.5 w-full rounded-md relative ${
-              errors?.all || errors?.password ? 'bg__error' : 'bg__success'
+              errors?.all || errors?.password ? "bg__error" : "bg__success"
             }`}
           >
             <input
-              type={showPass ? 'text' : 'password'}
-              name='password'
-              id='password'
-              placeholder='Enter your password'
+              type={showPass ? "text" : "password"}
+              name="password"
+              id="password"
+              placeholder="Enter your password"
               value={auth.password}
               onChange={handleOnChange}
             />
             {showPass ? (
               <FiEyeOff
-                className='absolute top-[35%] right-[3%] text-black cursor-pointer'
+                className="absolute top-[35%] right-[3%] text-black cursor-pointer"
                 onClick={togglePass}
               />
             ) : (
               <FiEye
-                className='absolute top-[35%] right-[3%] text-black cursor-pointer'
+                className="absolute top-[35%] right-[3%] text-black cursor-pointer"
                 onClick={togglePass}
               />
             )}
           </div>
-          {errors?.password && <p className='error'>{errors?.password}</p>}
+          {errors?.password && <p className="error">{errors?.password}</p>}
 
-          <div className='flex justify-end items-end'>
-            <Link to='/register' className='underline'>
+          <div className="flex items-end justify-end">
+            <Link to="/register" className="underline">
               Register
             </Link>
           </div>
         </div>
 
-        <button type='submit' className='btn__submit'>
+        <button type="submit" className="btn__submit">
           Login
         </button>
-      </form>
+        </form> */}
+        </Formik>
+
     </section>
   );
 };
