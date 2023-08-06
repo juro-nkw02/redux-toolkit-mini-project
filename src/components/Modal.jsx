@@ -13,13 +13,13 @@ const Modal = ({ title = '', message = '', actions = [], closeModal }) => {
             }}
           />
         </div>
-        {title !== '' && (
+        {title != '' && (
           <div className='p-8 pb-6 pt-2 border-b border-[#e87070]'>{title}</div>
         )}
-        {message !== '' && (
+        {message != '' && (
           <div className='p-8 pt-4 border-b border-[#e87070]'>{message}</div>
         )}
-        {actions !== [] && (
+        {actions != [] && (
           <div className='p-4 flex justify-center items-center gap-x-5'>
             {actions.map((act, ind) => (
               <button
