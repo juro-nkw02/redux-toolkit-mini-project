@@ -6,9 +6,9 @@
       "id": 11
     },
     {
-      "name": "TTY",
-      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
-      "id": 12
+      "id": 12,
+      "name": "testupf",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png"
     },
     {
       "name": "gg",
@@ -24,6 +24,11 @@
       "name": "asdff",
       "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png",
       "id": 15
+    },
+    {
+      "id": 16,
+      "name": "test",
+      "img_url": "https://res.cloudinary.com/datmqislo/image/upload/v1679812362/game%20assets/pngwing.com_vy1xpc.png"
     }
   ],
   "users": [
@@ -46,6 +51,11 @@
       "username": "jj",
       "password": "jj@123",
       "id": 4
+    },
+    {
+      "username": "admin123",
+      "password": "admin123",
+      "id": 5
     }
   ]
 }

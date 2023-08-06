@@ -1,5 +1,5 @@
 .error {
-  @apply text-gray-100 py-2 text-opacity-80;
+  @apply text-gray-50 bg-red-500 bg-opacity-80 p-2 text-opacity-80 rounded-md;
 }
 
 .bg__error {

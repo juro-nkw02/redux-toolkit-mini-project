@@ -1,10 +1,13 @@
 import axios from 'axios';
+import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { GAME_URL } from '../../config';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createGame, updateGame } from '../../features/game/gameSlice';
+import * as Yup from 'yup';
+import FormikController from '../../formik/formik-container';
 
 const initialGame = {
   id: '',
@@ -13,7 +16,6 @@ const initialGame = {
 };
 
 const initialGameFormErrors = {
-  all: '',
   name: '',
   img_url: '',
 };
@@ -25,20 +27,17 @@ const compareArray = (arrOne, arrTwo) => {
 const Index = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { id } = useParams();
   const [game, setGame] = useState(initialGame);
-  const [currentGame, setCurrentGame] = useState(initialGame);
-  const [errors, setErrors] = useState(initialGameFormErrors);
 
   useEffect(() => {
     if (id) {
       axios
         .get(`${GAME_URL}/games/${id}`)
         .then((resp) => {
-          console.log(resp);
           if (resp.status === 200 || resp.status === 'OK') {
             setGame(resp.data);
-            setCurrentGame(resp.data);
           }
         })
         .catch((ex) => {
@@ -46,56 +45,30 @@ const Index = () => {
         });
     } else {
       setGame(initialGame);
-      setCurrentGame(initialGame);
     }
   }, [id]);
 
-  const validator = () => {
-    let errorBag = [];
+  const validator = (values) => {
+    if (game.id) {
+      values.id = game.id;
+    }
 
-    const returnError = () => {
-      setErrors(errorBag);
+    if (!compareArray(game, values)) {
+      return true;
+    } else {
+      toast.info('Your value are same.');
       return false;
-    };
-
-    if (currentGame.name === '' && currentGame.img_url === '') {
-      errorBag['all'] = 'All fields are required.';
-
-      return returnError();
     }
-
-    if (currentGame.name === '') {
-      errorBag['name'] = 'The game name is required.';
-    }
-    if (currentGame.img_url === '') {
-      errorBag['img_url'] = 'The image url is required.';
-    }
-
-    if (currentGame.name !== '' && currentGame.img_url !== '') {
-      if (!compareArray(game, currentGame)) {
-        return true;
-      } else {
-        toast.info('Your value are same.');
-      }
-    }
-
-    return returnError();
   };
 
-  const handleOnChange = (event) => {
-    const { name, value } = event.target;
-    setCurrentGame({ ...currentGame, [name]: value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (validator()) {
-      if (id) {
-        dispatch(updateGame({ payload: currentGame, navigate }));
-      } else {
-        dispatch(createGame({ payload: currentGame, navigate }));
-      }
+  const handleSubmit = (values) => {
+    if (!validator(values)) {
+      return;
+    }
+    if (game.id) {
+      dispatch(updateGame({ payload: values, navigate }));
+    } else {
+      dispatch(createGame({ payload: values, navigate }));
     }
   };
 
@@ -108,56 +81,41 @@ const Index = () => {
       <p className='text-center mb-4 text-4xl'>
         {id ? 'Update Game' : 'Create Game'}
       </p>
-      <form onSubmit={handleSubmit} onReset={handleReset}>
-        {errors?.all && <p className='error'>{errors?.all}</p>}
-        {errors?.register && <p className='error'>{errors?.register}</p>}
-        <div>
-          <label htmlFor='name'>Name</label>
-          <div
-            className={`p-0.5 w-full rounded-md relative ${
-              errors?.all || errors?.name ? 'bg__error' : 'bg__success'
-            }`}
-          >
-            <input
-              type='text'
+      <Formik
+        initialValues={game}
+        initialErrors={initialGameFormErrors}
+        values={game}
+        onSubmit={handleSubmit}
+        validationSchema={Yup.object({
+          name: Yup.string().required('Game Name is required.'),
+          img_url: Yup.string().required('Image URL is required.'),
+        })}
+        onReset={handleReset}
+      >
+        {() => (
+          <Form>
+            <FormikController
+              control='input'
+              label='Name'
               name='name'
-              id='name'
-              placeholder='Enter your name'
-              value={currentGame.name}
-              onChange={handleOnChange}
+              placeholder='Enter a game name...'
             />
-          </div>
-          {errors?.name && <p className='error'>{errors?.name}</p>}
-        </div>
-        <div>
-          <label htmlFor='img_url'>Image URL</label>
-          <div
-            className={`p-0.5 w-full rounded-md relative ${
-              errors?.all || errors?.img_url ? 'bg__error' : 'bg__success'
-            }`}
-          >
-            <input
-              type='text'
+            <FormikController
+              control='input'
+              label='Image URL'
               name='img_url'
-              id='img_url'
-              placeholder='Enter your image url'
-              value={currentGame.img_url}
-              onChange={handleOnChange}
+              placeholder='Enter the game image url...'
             />
-          </div>
-          {errors?.img_url && <p className='error'>{errors?.img_url}</p>}
-        </div>
 
-        <button type='submit' className='btn__submit'>
-          Save
-        </button>
-        <button
-          type='reset'
-          className='ml-10 px-8 py-2 border border-[#e87070] rounded-md hover:bg-gradient-to-br hover:from-[#cf1b1b] hover:to-[#aa8383b3]'
-        >
-          Cancel
-        </button>
-      </form>
+            <FormikController control='button' label='Save' />
+            <FormikController
+              control='button'
+              label='Cancel'
+              variation='reset'
+            />
+          </Form>
+        )}
+      </Formik>
     </section>
   );
 };
