@@ -43,7 +43,8 @@ const Index = () => {
           {authenticated || token ? (
             <div className='flex gap-x-8 text-left'>
               <p className='inline-flex justify-center items-center gap-x-1.5'>
-                Username <FaChevronDown size='12' className='text-gray-100' />
+                {authenticated?.username}{' '}
+                <FaChevronDown size='12' className='text-gray-100' />
               </p>
               <span onClick={handleLogout} className='cursor-pointer'>
                 Log out
