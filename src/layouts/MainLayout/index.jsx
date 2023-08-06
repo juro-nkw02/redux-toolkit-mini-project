@@ -9,6 +9,7 @@ const Index = () => {
   let { token } = useToken();
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.auth.authenticatedUser);
+  console.log("authenticated",authenticated)
 
   const handleLogout = () => {
     dispatch(logout());
@@ -18,8 +19,8 @@ const Index = () => {
   return (
     <>
       <div className='flex justify-between w-full text-white'>
-        <div className='flex gap-x-2 justify-start items-center z-10 p-4'>
-          <p className='text-5xl mr-10'>GZ</p>
+        <div className='z-10 flex items-center justify-start p-4 gap-x-2'>
+          <p className='mr-10 text-5xl'>GS</p>
           <nav>
             <ul className='flex list-none gap-x-8'>
               <li className='hover:text-red-400'>
@@ -41,16 +42,16 @@ const Index = () => {
 
         <div className='flex items-center p-4 text-base'>
           {authenticated || token ? (
-            <div className='flex gap-x-8 text-left'>
+            <div className='flex text-left gap-x-8'>
               <p className='inline-flex justify-center items-center gap-x-1.5'>
-                Username <FaChevronDown size='12' className='text-gray-100' />
+                { authenticated?.username} <FaChevronDown size='12' className='text-gray-100' />
               </p>
               <span onClick={handleLogout} className='cursor-pointer'>
                 Log out
               </span>
             </div>
           ) : (
-            <div className='flex gap-x-8 text-left'>
+            <div className='flex text-left gap-x-8'>
               <NavLink to='/login'>Log in</NavLink>
               <NavLink to='/register'>Register</NavLink>
             </div>
