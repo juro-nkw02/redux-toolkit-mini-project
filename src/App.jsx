@@ -4,8 +4,8 @@ import Signup from './pages/Signup';
 import GameForm from './pages/GameForm';
 import MainLayout from './layouts/MainLayout';
 import { Route, Routes } from 'react-router-dom';
-import ProtectedRoute from './Providers/ProtectedRoute';
-import LoginConfirmRoute from './Providers/LoginConfirmRoute';
+import ProtectedRoute from './routes/ProtectedRoute';
+import LoginConfirmRoute from './routes/LoginConfirmRoute';
 
 function App() {
   return (
