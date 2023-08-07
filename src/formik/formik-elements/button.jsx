@@ -29,9 +29,12 @@ const Button = (props) => {
   return (
     <button
       type={type}
-      className={className + ` ${disabled && 'opacity-50 pointer-events-none'}`}
+      className={
+        className +
+        ` ${disabled && 'opacity-50 cursor-not-allowed pointer-events-none'}`
+      }
       disabled={disabled}
-      {...(customAction && { onClick: clickAction })}
+      {...(customAction && !disabled ? { onClick: clickAction } : {})}
     >
       {label}
     </button>
