@@ -1,9 +1,9 @@
 import useToken from '../../hooks/useToken.js';
 import { AUTHORIZATION } from '../../constants';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/auth/authSlice.js';
+import MenuDropdown from '../../components/MenuDropdown.jsx';
 
 const Index = () => {
   let { token } = useToken();
@@ -14,6 +14,14 @@ const Index = () => {
     dispatch(logout());
     window.location.reload(false);
   };
+
+  const dropdownItems = [
+    {
+      key: 'logout',
+      label: 'Logout',
+      action: handleLogout,
+    },
+  ];
 
   return (
     <>
@@ -39,17 +47,12 @@ const Index = () => {
           </nav>
         </div>
 
-        <div className='flex items-center p-4 text-base'>
+        <div className='flex items-center p-4 pe-8 text-base'>
           {authenticated || token ? (
-            <div className='flex gap-x-8 text-left'>
-              <p className='inline-flex justify-center items-center gap-x-1.5'>
-                {authenticated?.username}{' '}
-                <FaChevronDown size='12' className='text-gray-100' />
-              </p>
-              <span onClick={handleLogout} className='cursor-pointer'>
-                Log out
-              </span>
-            </div>
+            <MenuDropdown
+              title={authenticated?.username}
+              items={dropdownItems}
+            />
           ) : (
             <div className='flex gap-x-8 text-left'>
               <NavLink to='/login'>Log in</NavLink>
