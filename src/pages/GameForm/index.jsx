@@ -1,13 +1,13 @@
 import axios from 'axios';
+import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { GAME_URL } from '../../config';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createGame, updateGame } from '../../features/game/gameSlice';
-import * as Yup from 'yup';
 import FormikController from '../../formik/formik-container';
+import { createGame, updateGame } from '../../features/game/gameSlice';
 
 const initialGame = {
   id: '',
@@ -72,9 +72,10 @@ const Index = () => {
     }
   };
 
-  const handleReset = () => {
-    navigate('/');
-  };
+  // can't be used with onReset event on Formik
+  // const handleReset = () => {
+  //   navigate('/');
+  // };
 
   return (
     <section className='w-3/5 m-auto text-white'>
@@ -84,13 +85,13 @@ const Index = () => {
       <Formik
         initialValues={game}
         initialErrors={initialGameFormErrors}
-        values={game}
+        enableReinitialize
         onSubmit={handleSubmit}
         validationSchema={Yup.object({
           name: Yup.string().required('Game Name is required.'),
           img_url: Yup.string().required('Image URL is required.'),
         })}
-        onReset={handleReset}
+        // onReset={handleReset}    // this will be called every time the component is re-rendered
       >
         {(formProps) => (
           <Form>
@@ -110,12 +111,17 @@ const Index = () => {
             <FormikController
               control='button'
               label='Save'
-              disabled={!(formProps.dirty && formProps.isValid)}
+              disabled={
+                formProps.isSubmitting ||
+                !(formProps.dirty && formProps.isValid)
+              }
             />
             <FormikController
               control='button'
               label='Cancel'
-              variation='reset'
+              variation='other'
+              customAction={true}
+              clickAction={() => navigate('/')}
             />
           </Form>
         )}

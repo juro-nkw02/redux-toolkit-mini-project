@@ -10,7 +10,7 @@ const Input = (props) => {
       <label htmlFor={name}>{label}</label>
       <div
         className={`p-0.5 w-full rounded-md relative  ${
-          meta?.error ? 'bg__error' : 'bg__success'
+          meta.touched && meta?.error ? 'bg__error' : 'bg__success'
         }`}
       >
         <input
@@ -21,7 +21,7 @@ const Input = (props) => {
           {...field}
         />
       </div>
-      {meta?.error && <p className='error'>{meta?.error}</p>}
+      {meta?.error && meta.touched && <p className='error'>{meta?.error}</p>}
     </div>
   );
 };
