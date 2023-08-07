@@ -92,7 +92,7 @@ const Index = () => {
         })}
         onReset={handleReset}
       >
-        {() => (
+        {(formProps) => (
           <Form>
             <FormikController
               control='input'
@@ -107,7 +107,11 @@ const Index = () => {
               placeholder='Enter the game image url...'
             />
 
-            <FormikController control='button' label='Save' />
+            <FormikController
+              control='button'
+              label='Save'
+              disabled={!(formProps.dirty && formProps.isValid)}
+            />
             <FormikController
               control='button'
               label='Cancel'

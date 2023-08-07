@@ -116,7 +116,11 @@ const Index = () => {
               </Link>
             </div>
 
-            <FormikController control='button' label='Login' />
+            <FormikController
+              control='button'
+              label='Login'
+              disabled={!(formProps.dirty && formProps.isValid)}
+            />
           </Form>
         )}
       </Formik>

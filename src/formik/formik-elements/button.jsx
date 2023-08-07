@@ -1,37 +1,32 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 const Button = (props) => {
-  const { label, variation = 'default' } = props;
+  const { label, variation = 'default', disabled } = props;
+  const [type, setType] = useState('submit');
+  const [className, setClassName] = useState('btn__submit');
 
-  switch (variation) {
-    case 'default':
-      return (
-        <button type='submit' className='btn__submit'>
-          {label}
-        </button>
+  useEffect(() => {
+    if (variation == 'reset') {
+      setType('reset');
+      setClassName(
+        'ml-10 px-8 py-2 border border-[#e87070] rounded-md hover:bg-gradient-to-br hover:from-[#cf1b1b] hover:to-[#aa8383b3]'
       );
-    case 'reset':
-      return (
-        <button
-          type='reset'
-          className='ml-10 px-8 py-2 border border-[#e87070] rounded-md hover:bg-gradient-to-br hover:from-[#cf1b1b] hover:to-[#aa8383b3]'
-        >
-          {label}
-        </button>
-      );
-    default:
-      return (
-        <button type='button' className='btn__submit'>
-          {label}
-        </button>
-      );
-  }
+    }
+  }, [variation]);
+
+  return (
+    <button type={type} className={className  + ` ${disabled && 'pointer-events-none'}`} disabled={disabled}>
+      {label}
+    </button>
+  );
 };
 
 Button.propTypes = {
   props: PropTypes.object,
   label: PropTypes.string,
   variation: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default Button;

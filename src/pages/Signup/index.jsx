@@ -118,7 +118,11 @@ const Index = () => {
               placeholder='Confirm your password...'
             />
 
-            <FormikController control='button' label='Sign up' />
+            <FormikController
+              control='button'
+              label='Sign up'
+              disabled={!(formProps.dirty && formProps.isValid)}
+            />
           </Form>
         )}
       </Formik>

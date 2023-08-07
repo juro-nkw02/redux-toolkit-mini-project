@@ -24,7 +24,7 @@ form div div input {
 
 .btn__submit {
   background: linear-gradient(170deg, #e87070 0%, #100f0fb3 100%);
-  @apply px-8 py-2 mt-4 rounded-md cursor-pointer;
+  @apply px-8 py-2 mt-4 rounded-md;
 }
 
 .btn__submit:hover {

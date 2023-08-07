@@ -8,7 +8,11 @@ const Input = (props) => {
   return (
     <div>
       <label htmlFor={name}>{label}</label>
-      <div className={`p-0.5 w-full rounded-md relative bg__success`}>
+      <div
+        className={`p-0.5 w-full rounded-md relative  ${
+          meta?.error ? 'bg__error' : 'bg__success'
+        }`}
+      >
         <input
           type='text'
           name={name}
